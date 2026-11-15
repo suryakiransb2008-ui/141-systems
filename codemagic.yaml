@@ -1,0 +1,21 @@
+workflows:
+  tf141-all-devices:
+    name: Build TF141 (Mobile, Tablet & PC)
+    max_build_duration: 45
+    scripts:
+      - name: Initialize Android & Web
+        script: flutter create --org com.tf141 --project-name tf141_tactical --platforms=android,web .
+      - name: Configure Android Permissions
+        script: |
+          sed -i 's/minSdk = flutter.minSdkVersion/minSdk = 23/' android/app/build.gradle*
+          sed -i '/<application/i \    <uses-permission android:name="android.permission.INTERNET"/>\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>\n    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>\n    <uses-permission android:name="android.permission.CAMERA"/>\n    <uses-permission android:name="android.permission.RECORD_AUDIO"/>' android/app/src/main/AndroidManifest.xml
+      - name: Build Android APK (Phones & Tablets)
+        script: flutter build apk --release
+      - name: Build PC & Browser Version
+        script: flutter build web --release
+      - name: Zip PC Version
+        script: zip -r tf141-pc-web.zip build/web
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk
+      - tf141-pc-web.zip
+      

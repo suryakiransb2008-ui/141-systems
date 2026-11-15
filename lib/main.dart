@@ -1,3 +1,4 @@
+import 'hub.dart';
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
@@ -19,11 +20,11 @@ void main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   await Firebase.initializeApp(
     options: const FirebaseOptions(
-      apiKey: "PASTE_YOUR_API_KEY_HERE",
-      appId: "PASTE_YOUR_APP_ID_HERE",
-      messagingSenderId: "PASTE_YOUR_SENDER_ID_HERE",
-      projectId: "PASTE_YOUR_PROJECT_ID_HERE",
-      storageBucket: "PASTE_YOUR_STORAGE_BUCKET_HERE",
+      apiKey: "AIzaSyBdqfBIIMukCOKbweMcKr_6nQeD9DCEN5k",
+      appId: "1:740746545542:web:3968f4b62f3ad6857e8407",
+      messagingSenderId: "740746545542",
+      projectId: "systems-82249",
+      storageBucket: "systems-82249.firebasestorage.app",
     ),
   );
   runApp(const TF141App());

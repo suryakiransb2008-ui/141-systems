@@ -1,10 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
@@ -263,12 +263,18 @@ class _GodsEyeSatelliteMapState extends State<GodsEyeSatelliteMap> {
               children: [
                 TileLayer(
                   urlTemplate:
-                      'https://arcgisonline.com{z}/{y}/{x}',
+                      'https://server.' + 'arcgisonline' + '.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                  
+                  
+                
+                
                   userAgentPackageName: 'com.tf141.tactical',
                 ),
                 TileLayer(
-                  urlTemplate:
-                      'https://arcgisonline.com{z}/{y}/{x}',
+                  urlTemplate:'https://services.' + 'arcgisonline' + '.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+                  
+                  
+                      
                   userAgentPackageName: 'com.tf141.tactical',
                 ),
                 MarkerLayer(markers: markers),
@@ -284,4 +290,5 @@ class _GodsEyeSatelliteMapState extends State<GodsEyeSatelliteMap> {
                 child: Wrap(
                   spacing: 12,
                   children: docs.map((d) {
+                    final data = d.data() as Map<String, dynamic>;
                     

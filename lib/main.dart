@@ -297,4 +297,69 @@ class _OperatorSetupScreenState extends State<OperatorSetupScreen> {
                   children: _slots.map((slot) {
                     final active = _selectedSlot == slot;
                     return ChoiceChip(
-                      
+                                  label: Text(slot, style: const TextStyle(fontFamily: 'monospace')),
+                      selected: active,
+                      selectedColor: const Color(0xFF2B3E50),
+                      onSelected: (_) => setState(() => _selectedSlot = slot),
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 24),
+                const Text("CUSTOM CALLSIGN:",
+                    style: TextStyle(color: Color(0xFF8A99A8), fontFamily: 'monospace')),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: _callsignController,
+                  style: const TextStyle(
+                      color: Colors.white, fontFamily: 'monospace', fontSize: 18),
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Color(0xFF0E1318),
+                    border: OutlineInputBorder(),
+                    hintText: "e.g. GHOST, SOAP, PRICE, GAZ",
+                  ),
+                ),
+                const SizedBox(height: 24),
+                const Text("CURRENT TACTICAL STATUS:",
+                    style: TextStyle(color: Color(0xFF8A99A8), fontFamily: 'monospace')),
+                const SizedBox(height: 10),
+                Wrap(
+                  spacing: 10,
+                  children: _statuses.map((st) {
+                    final active = _status == st;
+                    return ChoiceChip(
+                      label: Text(st, style: const TextStyle(fontFamily: 'monospace')),
+                      selected: active,
+                      selectedColor: const Color(0xFF1F4E3D),
+                      onSelected: (_) => setState(() => _status = st),
+                    );
+                  }).toList(),
+                ),
+                const Spacer(),
+                SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFD0D8E0),
+                      foregroundColor: Colors.black,
+                    ),
+                    onPressed: _deploy,
+                    child: const Text(
+                      "INITIALIZE GOD'S EYE UPLINK",
+                      style: TextStyle(
+                          fontFamily: 'monospace',
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+

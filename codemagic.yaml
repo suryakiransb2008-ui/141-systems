@@ -7,8 +7,18 @@ workflows:
         script: flutter create --org com.tf141 --project-name tf141_tactical --platforms=android,web .
       - name: Configure Android Permissions
         script: |
-          sed -i 's/minSdk = flutter.minSdkVersion/minSdk = 23/' android/app/build.gradle*
-          sed -i '/<application/i \    <uses-permission android:name="android.permission.INTERNET"/>\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>\n    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>\n    <uses-permission android:name="android.permission.CAMERA"/>\n    <uses-permission android:name="android.permission.RECORD_AUDIO"/>' android/app/src/main/AndroidManifest.xml
+          python3 -c '
+          import glob, re
+          for path in glob.glob("android/app/build.gradle*"):
+              s = open(path).read()
+              s = re.sub(r"minSdk\s*=\s*flutter\.minSdkVersion|minSdkVersion\s+flutter\.minSdkVersion", lambda m: "minSdk = 23" if "=" in m.group(0) else "minSdkVersion 23", s)
+              open(path, "w").write(s)
+          m_path = "android/app/src/main/AndroidManifest.xml"
+          m = open(m_path).read()
+          perms = "<uses-permission android:name=\"android.permission.INTERNET\"/><uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/><uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/><uses-permission android:name=\"android.permission.RECORD_AUDIO\"/><uses-permission android:name=\"android.permission.CAMERA\"/>"
+          m = m.replace("<application", perms + "\n    <application", 1)
+          open(m_path, "w").write(m)
+          '
       - name: Build Android APK (Phones & Tablets)
         script: flutter build apk --release
       - name: Build PC & Browser Version
@@ -16,6 +26,6 @@ workflows:
       - name: Zip PC Version
         script: zip -r tf141-pc-web.zip build/web
     artifacts:
-      - build/app/outputs/flutter-apk/*.apk
+      - build/app/outputs/flutter-apk/app-release.apk
       - tf141-pc-web.zip
       
